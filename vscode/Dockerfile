@@ -292,4 +292,27 @@ CMD ["start.sh"]
 # This will generally always be needed for React apps
 RUN npm install react-scripts --global \
     # Needed for reverse-proxy easy config
-    && npm install nginx-conf --global 
+    && npm install nginx-conf --global
+
+# Jupyter extension that works
+RUN cd /tmp && wget https://open-vsx.org/api/ms-toolsai/jupyter/2021.8.12/file/ms-toolsai.jupyter-2021.8.12.vsix && code-server --force --install-extension ./ms-toolsai.jupyter-2021.8.12.vsix
+ 
+# Drew Adds His Autograder
+RUN git clone https://github.com/joyceerhl/vscode-run-diff.git $VSCODE_EXTENSIONS/vscode-run-diff
+RUN cd $VSCODE_EXTENSIONS/vscode-run-diff
+RUN npm install --prefix=$VSCODE_EXTENSIONS/vscode-run-diff
+RUN npm install --prefix=$VSCODE_EXTENSIONS/vscode-run-diff vsce
+RUN npm run --prefix=$VSCODE_EXTENSIONS/vscode-run-diff package
+RUN cd $VSCODE_EXTENSIONS/vscode-run-diff && npx vsce package
+RUN mv $VSCODE_EXTENSIONS/vscode-run-diff/vscode-run-diff-0.0.1.vsix $VSCODE_EXTENSIONS
+RUN code-server --install-extension $VSCODE_EXTENSIONS/vscode-run-diff-0.0.1.vsix
+ 
+# Get conda up and running for us
+RUN conda install --quiet --yes -c conda-forge jupyter numpy pandas matplotlib pytest altair pytest-mock black
+RUN /home/coder/miniconda/bin/pip install ineqpy
+RUN conda config --add channels conda-forge
+RUN conda config --set channel_priority strict
+RUN conda init --all
+USER root
+RUN conda init --all
+USER coder

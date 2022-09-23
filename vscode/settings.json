@@ -22,10 +22,12 @@
     "launchButtons": {
         "reloadButton": null
     },
-    "python.pythonPath": "/usr/bin/python3",
     "rust-client.rustupPath": "/usr/bin/rustup",
     "liveServer.settings.ChromeDebuggingAttachment": true,
     "java.debug.settings.console": "internalConsole",
     "http.proxySupport": "off",
-    "github.gitAuthentication": false
+    "github.gitAuthentication": false,
+    "python.pythonPath": "~/miniconda/bin/python",
+    "terminal.integrated.inheritEnv": false,
+    "python.formatting.provider": "black"
 }
