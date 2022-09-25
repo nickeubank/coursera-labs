@@ -29,5 +29,7 @@
     "github.gitAuthentication": false,
     "python.pythonPath": "~/miniconda/bin/python",
     "terminal.integrated.inheritEnv": false,
-    "python.formatting.provider": "black"
+    "python.formatting.provider": "black",
+    "editor.bracketPairColorization.enabled": true,
+    "editor.parameterHints.enabled": false
 }

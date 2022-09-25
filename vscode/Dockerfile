@@ -122,38 +122,6 @@ ENV VSCODE_EXTENSIONS "/home/coder/.local/share/code-server/extensions"
 
 RUN mkdir -p ${VSCODE_USER}
 
-# Install golang github packages
-RUN go get \
-    # autocompletion daemon for golang
-    github.com/mdempsky/gocode \ 
-    # tool to get a list of available and importable Go packages
-    github.com/uudashr/gopkgs/cmd/gopkgs@v2.0 \ 
-    # a tool to extract JSON representation of declarations from Go source file
-    github.com/ramya-rao-a/go-outline \ 
-    # a tool to extract JSON representation of package symbols from Go source tree
-    github.com/acroca/go-symbols \
-    # debugger for golang
-    github.com/go-delve/delve/cmd/dlv \ 
-    # autocompletion daemon for golang
-    github.com/stamblerre/gocode \ 
-    # tool to print location of the definition of a symbol
-    github.com/rogpeppe/godef \ 
-    # tool to add zero-value returns to incomplete Go return statements
-    github.com/sqs/goreturns
-
-# Install official golang tools
-RUN go install \
-    # a tool for answering questions about Go source code
-    golang.org/x/tools/cmd/guru@v0.1.12 \ 
-    # tool to perform precise type-safe renaming of identifiers
-    golang.org/x/tools/cmd/gorename@v0.1.12
-
-# Install golang language server separately due to package version differences
-RUN go install golang.org/x/tools/gopls@v0.9.1
-
-# Install golang linter separately due to package version differences
-RUN go install golang.org/x/lint/golint@v0.0.0-20210508222113-6edffad5e616
-
 # Set up environment variables required for Scala to work (without cosmetic errors)
 RUN echo 'export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")' >> /home/coder/.bashrc
 RUN echo "export TERM=xterm" >> /home/coder/.bashrc
@@ -299,6 +267,7 @@ RUN cd /tmp && wget https://open-vsx.org/api/ms-toolsai/jupyter/2021.8.12/file/m
  
 # Drew Adds His Autograder
 RUN git clone https://github.com/joyceerhl/vscode-run-diff.git $VSCODE_EXTENSIONS/vscode-run-diff
+RUN npm install patch-package
 RUN cd $VSCODE_EXTENSIONS/vscode-run-diff
 RUN npm install --prefix=$VSCODE_EXTENSIONS/vscode-run-diff
 RUN npm install --prefix=$VSCODE_EXTENSIONS/vscode-run-diff vsce
